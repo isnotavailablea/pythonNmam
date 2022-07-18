@@ -5,7 +5,7 @@ path = "Male-MI-0_Cluster.xlsx"
 wb_obj = openpyxl.load_workbook(path)
 sheet_obj = wb_obj.active
 cell_obj = sheet_obj.cell(row=1, column=1)
-print(cell_obj.value)
+#print(cell_obj.value)
 
 maindict = {"ageGroups": {
         "26-30": {"value": 0, "others": {}}, "31-35": {"value": 0, "others": {}}, "36-40": {"value": 0, "others": {}},
