@@ -1,12 +1,24 @@
 import openpyxl
 
-path="finalprod.xlsx"
+path="finalprodFinal.xlsx"
 wb_obj = openpyxl.load_workbook(path)
 sheet_obj = wb_obj.active
 cell_obj = sheet_obj.cell(row=1, column=1)
 maxrow=sheet_obj.max_row
 maxcolumn=sheet_obj.max_column
-
+feature_name_map={
+    "CKMB-1":"BM-1",
+    "CKMB-0":"BM-0",
+    "Chest_Pain-2":"CP-2",
+    "Chest_Pain-1": "CP-1",
+    "Chest_Pain-0": "CP-0",
+    "Diabetic-1": "DB-1",
+    "Diabetic-0": "DB-0",
+    "PHF /family history-1":"PFH-1",
+    "PHF /family history-0":"PFH-0",
+    "Cholesterol-1":"CHOL-1",
+    "Cholesterol-0":"CHOL-0"
+}
 class Head:
     def __init__(self):
         self.next=[]
@@ -89,8 +101,11 @@ def treetraverse(node,pathvalue,path_list):
         #print(round(pathvalue,3))
         path_string=""
         for i in path_list:
-            path_string+=i+","
-        scoredict[path_string]=round(pathvalue,3)
+            if i in feature_name_map:
+                path_string+=feature_name_map[i]+"->"
+            else:
+                path_string+=i+"->"
+        scoredict[path_string]=[round(pathvalue,3)]
         #print(path_list)
         #print("=",round(pathvalue,3))
         total+=1
@@ -115,8 +130,8 @@ def treetraverse(node,pathvalue,path_list):
     treetraverse(node[1:],pathvalue,path_list)
 
 treetraverse(ageBucket.next,0,[])
-for keys in scoredict:
-    print(keys)
-    print("=",scoredict[keys])
+# for keys in scoredict:
+#     print(keys)
+#     print("=",scoredict[keys])
 print("maximum value is: ",val)
 print("Total path taken: ",total)
