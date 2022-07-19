@@ -8,5 +8,79 @@ maxrow=sheet_obj.max_row
 maxcolumn=sheet_obj.max_column
 
 class Head:
-    def __init__(self,next):
+    def __init__(self):
         self.next=[]
+class Normal:
+    def __init__(self,name,value):
+        self.name=name
+        self.value=value
+        self.next=[]
+
+ageBucket=Head()
+temp_list=[]
+#columns_done=2
+for i in range(2,maxrow+1):
+    name=sheet_obj.cell(row=i,column=1).value
+    value=sheet_obj.cell(row=i,column=2).value
+    agenode=Normal(name,value)
+    temp_list.append(agenode)
+ageBucket.next=temp_list
+features=[2,2,3,2,2,2]
+index_done=-1
+
+
+
+#<---------------------------------------Below is the tree implementation-------------------------------------------------------------------->
+queue_current=[]
+child_current=[]
+temp=[]
+for i in ageBucket.next:
+    queue_current.append(i)
+
+
+def insert_node(node, index_done):
+    columns_done = 2
+    for i in range(index_done + 1):
+        columns_done += features[i]
+    temp_list = []
+    for i in range(features[index_done + 1]):
+        name = sheet_obj.cell(row=1, column=columns_done + i + 1).value
+        value = sheet_obj.cell(row=2, column=columns_done + i + 1).value
+        newnode = Normal(name, value)
+        temp_list.append(newnode)
+        global child_current
+        child_current.append(newnode)
+    node.next = temp_list
+    print(f"for {node.name} children are:")
+    for i in node.next:
+        print(i.name, end=" ")
+    print("\n")
+    return
+
+
+def addchildren(thelist,index_done):
+    if index_done==len(features)-1:
+        return
+    for i in thelist:
+        insert_node(i,index_done)
+    global queue_current,child_current
+    queue_current=child_current
+    child_current=[]
+    #index_done+=1
+    return addchildren(queue_current,index_done+1)
+
+addchildren(queue_current,-1)
+
+
+
+
+
+#<-------------------------------------Following is for tree traversal through all possible paths------------------------------------------------->
+def treetraverse(node):
+    if node==[]:
+        return
+    print(node[0].name)
+    treetraverse(node[0].next)
+    treetraverse(node[1:])
+
+treetraverse(ageBucket.next)
