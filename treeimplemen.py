@@ -76,11 +76,23 @@ addchildren(queue_current,-1)
 
 
 #<-------------------------------------Following is for tree traversal through all possible paths------------------------------------------------->
-def treetraverse(node):
+val=0
+def treetraverse(node,pathvalue):
+    global val
     if node==[]:
+        #print(round(pathvalue,3))
+        if round(pathvalue,3)>val:
+            val=round(pathvalue,3)
+        else:
+            pass
         return
     print(node[0].name)
-    treetraverse(node[0].next)
-    treetraverse(node[1:])
+    # if node[0].next==[]:
+    #     print(pathvalue+node[0].value)
+    #     treetraverse(node[1:],pathvalue)
+    #     # return
+    treetraverse(node[0].next,pathvalue+node[0].value)
+    treetraverse(node[1:],pathvalue)
 
-treetraverse(ageBucket.next)
+treetraverse(ageBucket.next,0)
+print(val)
