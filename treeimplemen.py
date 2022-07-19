@@ -51,10 +51,10 @@ def insert_node(node, index_done):
         global child_current
         child_current.append(newnode)
     node.next = temp_list
-    print(f"for {node.name} children are:")
-    for i in node.next:
-        print(i.name, end=" ")
-    print("\n")
+    #print(f"for {node.name} children are:")
+    # for i in node.next:
+    #     print(i.name, end=" ")
+    # print("\n")
     return
 
 
@@ -77,22 +77,46 @@ addchildren(queue_current,-1)
 
 #<-------------------------------------Following is for tree traversal through all possible paths------------------------------------------------->
 val=0
-def treetraverse(node,pathvalue):
-    global val
+total=0
+scoredict={}
+def treetraverse(node,pathvalue,path_list):
+    global val,total,scoredict
+    # print("[",end="")
+    # for i in node:
+    #     print(i.name,end=",")
+    # print("]")
     if node==[]:
         #print(round(pathvalue,3))
+        path_string=""
+        for i in path_list:
+            path_string+=i+","
+        scoredict[path_string]=round(pathvalue,3)
+        #print(path_list)
+        #print("=",round(pathvalue,3))
+        total+=1
         if round(pathvalue,3)>val:
             val=round(pathvalue,3)
         else:
             pass
         return
-    print(node[0].name)
     # if node[0].next==[]:
-    #     print(pathvalue+node[0].value)
-    #     treetraverse(node[1:],pathvalue)
-    #     # return
-    treetraverse(node[0].next,pathvalue+node[0].value)
-    treetraverse(node[1:],pathvalue)
+    #     print(round(pathvalue,3))
+    #     total+=1
+    #     if round(pathvalue,3)>val:
+    #         val=round(pathvalue,3)
+    #     else:
+    #         pass
+    #     return
+    temp=path_list.copy()
+    temp.append(node[0].name)
+    treetraverse(node[0].next,pathvalue+node[0].value,temp)
+    if len(node)==1:
+        return
+    treetraverse(node[1:],pathvalue,path_list)
 
-treetraverse(ageBucket.next,0)
-print(val)
+treetraverse(ageBucket.next,0,[])
+for keys in scoredict:
+    print(keys)
+    print("=",scoredict[keys])
+print("maximum value is: ",val)
+print("Total path taken: ",total)
