@@ -5,6 +5,7 @@ dictcopy=ma.maindict.copy()
 totalpeople=0#This is the number of all the people
 agewt={}
 others={}
+
 if __name__=="__main__":
     for key in dictcopy["ageGroups"]:
         totalpeople += dictcopy["ageGroups"][key]["value"]
